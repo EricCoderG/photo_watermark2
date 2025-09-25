@@ -2,9 +2,9 @@
   "use_text": true,
   "text": {
     "text": "你好1212",
-    "opacity": 93,
+    "opacity": 20,
     "font_path": null,
-    "font_size": 29,
+    "font_size": 32,
     "stroke": true,
     "stroke_width": 4,
     "stroke_color": [
@@ -30,7 +30,7 @@
     "scale_percent": 30
   },
   "layout": {
-    "anchor": "center",
+    "anchor": "mr",
     "offset_x": -38,
     "offset_y": -94,
     "rotation_deg": 0.0,

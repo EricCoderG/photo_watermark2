@@ -14,7 +14,7 @@ from PySide6.QtGui import (QAction, QDragEnterEvent, QDropEvent, QIcon, QImage,
 from PySide6.QtWidgets import (
     QApplication, QWidget, QFileDialog, QListView, QLabel, QPushButton, QVBoxLayout,
     QHBoxLayout, QFormLayout, QLineEdit, QSpinBox, QComboBox, QCheckBox, QSlider,
-    QMessageBox, QGroupBox, QSplitter, QProgressBar, QStyle, QGridLayout)
+    QMessageBox, QGroupBox, QSplitter, QProgressBar, QStyle, QGridLayout, QColorDialog)
 
 SUPPORTED_INPUTS = {".jpg", ".jpeg", ".png", ".bmp", ".tiff", ".tif"}
 SUPPORTED_OUTPUTS = {"JPEG", "PNG"}
@@ -447,6 +447,21 @@ class MainWindow(QWidget):
         self.spn_stroke_w.valueChanged.connect(self.on_change)
         grid.addWidget(QLabel("描边宽度"), r,1); grid.addWidget(self.spn_stroke_w, r,2); r+=1
 
+        # 字体颜色选择
+        self.btn_fill_color = QPushButton("选择填充颜色")
+        self.btn_fill_color.clicked.connect(self.on_pick_fill_color)
+        self.lbl_fill_color = QLabel()
+        self.lbl_fill_color.setFixedSize(30, 20)
+        self.lbl_fill_color.setStyleSheet(f"background-color: rgb({self.cfg.text.fill_color[0]}, {self.cfg.text.fill_color[1]}, {self.cfg.text.fill_color[2]})")
+        grid.addWidget(QLabel("填充颜色"), r,0); grid.addWidget(self.btn_fill_color, r,1); grid.addWidget(self.lbl_fill_color, r,2); r+=1
+
+        self.btn_stroke_color = QPushButton("选择描边颜色")
+        self.btn_stroke_color.clicked.connect(self.on_pick_stroke_color)
+        self.lbl_stroke_color = QLabel()
+        self.lbl_stroke_color.setFixedSize(30, 20)
+        self.lbl_stroke_color.setStyleSheet(f"background-color: rgb({self.cfg.text.stroke_color[0]}, {self.cfg.text.stroke_color[1]}, {self.cfg.text.stroke_color[2]})")
+        grid.addWidget(QLabel("描边颜色"), r,0); grid.addWidget(self.btn_stroke_color, r,1); grid.addWidget(self.lbl_stroke_color, r,2); r+=1
+
         # —— 图片水印
         self.chk_img = QCheckBox("图片水印")
         self.chk_img.setChecked(self.cfg.use_image)
@@ -559,6 +574,22 @@ class MainWindow(QWidget):
         self.preview.set_config(self.cfg)
         self.save_last_state()
 
+    def on_pick_fill_color(self):
+        color = QColorDialog.getColor()
+        if color.isValid():
+            self.cfg.text.fill_color = (color.red(), color.green(), color.blue())
+            self.lbl_fill_color.setStyleSheet(f"background-color: rgb({color.red()}, {color.green()}, {color.blue()})")
+            self.preview.set_config(self.cfg)
+            self.save_last_state()
+
+    def on_pick_stroke_color(self):
+        color = QColorDialog.getColor()
+        if color.isValid():
+            self.cfg.text.stroke_color = (color.red(), color.green(), color.blue())
+            self.lbl_stroke_color.setStyleSheet(f"background-color: rgb({color.red()}, {color.green()}, {color.blue()})")
+            self.preview.set_config(self.cfg)
+            self.save_last_state()
+
     def on_pick_mark_img(self):
         file, _ = QFileDialog.getOpenFileName(self, "选择水印图片 (建议PNG)", os.getcwd(), "Images (*.png *.jpg *.jpeg *.bmp *.tif *.tiff)")
         if file:
@@ -622,6 +653,10 @@ class MainWindow(QWidget):
             self.spn_font.setValue(self.cfg.text.font_size)
             self.chk_stroke.setChecked(self.cfg.text.stroke)
             self.spn_stroke_w.setValue(self.cfg.text.stroke_width)
+            
+            # 更新颜色显示
+            self.lbl_fill_color.setStyleSheet(f"background-color: rgb({self.cfg.text.fill_color[0]}, {self.cfg.text.fill_color[1]}, {self.cfg.text.fill_color[2]})")
+            self.lbl_stroke_color.setStyleSheet(f"background-color: rgb({self.cfg.text.stroke_color[0]}, {self.cfg.text.stroke_color[1]}, {self.cfg.text.stroke_color[2]})")
 
             self.chk_img.setChecked(self.cfg.use_image)
             self.sld_img_op.setValue(self.cfg.image.opacity)
