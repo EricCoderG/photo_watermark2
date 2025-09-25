@@ -1,21 +1,21 @@
 {
   "use_text": true,
   "text": {
-    "text": "你好1212",
-    "opacity": 20,
+    "text": "我是一个水印Hello world 123",
+    "opacity": 88,
     "font_path": null,
-    "font_size": 32,
+    "font_size": 80,
     "stroke": true,
-    "stroke_width": 4,
+    "stroke_width": 1,
     "stroke_color": [
       0,
       0,
       0
     ],
     "fill_color": [
-      133,
-      129,
-      255
+      0,
+      0,
+      0
     ],
     "shadow": true,
     "shadow_offset": [
@@ -26,11 +26,11 @@
   "use_image": false,
   "image": {
     "path": null,
-    "opacity": 33,
+    "opacity": 36,
     "scale_percent": 30
   },
   "layout": {
-    "anchor": "mr",
+    "anchor": "center",
     "offset_x": -38,
     "offset_y": -94,
     "rotation_deg": 0.0,

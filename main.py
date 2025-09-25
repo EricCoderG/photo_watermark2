@@ -38,7 +38,7 @@ class TextStyle:
     text: str = "Sample Watermark"
     opacity: int = 40
     font_path: str | None = None
-    font_size: int = 36
+    font_size: int = 80
     stroke: bool = True
     stroke_width: int = 2
     stroke_color: tuple[int,int,int] = (0,0,0)
@@ -374,37 +374,49 @@ class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
         ensure_dirs()
-        self.setWindowTitle("批量图片加水印 - MVP")
+        self.setWindowTitle("批量图片加水印 ")
         self.resize(1280, 800)
 
         self.cfg = self.load_last_state() or WatermarkConfig()
         self.export_dir = DEFAULT_EXPORT_DIR
 
-        # 左：缩略图列表 右：预览 + 控件表单
+        # 左：预览区域 右：缩略图列表 + 控件表单
         self.list_view = ThumbList()
         self.preview = PreviewCanvas()
         self.preview.set_config(self.cfg)
 
+        # 左侧：大预览区域
         left = QVBoxLayout()
+        left.addWidget(self.preview, stretch=1)  # 预览区域占主要空间
+
+        # 右侧：导入和控制区域
+        right = QVBoxLayout()
+        
+        # 导入区域 - 做得更小
+        import_group = QGroupBox("导入图片")
+        import_layout = QVBoxLayout()
         btn_import = QPushButton("导入图片/文件夹…")
         btn_import.clicked.connect(self.on_import)
-        left.addWidget(btn_import)
-        left.addWidget(self.list_view)
+        import_layout.addWidget(btn_import)
+        
+        # 缩略图列表 - 限制高度
+        self.list_view.setMaximumHeight(200)  # 限制缩略图列表高度
+        import_layout.addWidget(self.list_view)
+        import_group.setLayout(import_layout)
+        right.addWidget(import_group)
 
         # 控制面板
         ctrl = self.build_controls()
-
-        right = QVBoxLayout()
-        right.addWidget(self.preview, stretch=1)
-        right.addWidget(ctrl, stretch=0)
+        right.addWidget(ctrl)
 
         splitter = QSplitter()
         lw = QWidget(); lw.setLayout(left)
         rw = QWidget(); rw.setLayout(right)
         splitter.addWidget(lw)
         splitter.addWidget(rw)
-        splitter.setStretchFactor(0, 0)
-        splitter.setStretchFactor(1, 1)
+        splitter.setStretchFactor(0, 3)  # 左侧预览区域占3倍空间
+        splitter.setStretchFactor(1, 1)  # 右侧控制区域占1倍空间
+        splitter.setSizes([900, 380])  # 设置初始大小：左侧900px，右侧380px
 
         root = QVBoxLayout(self)
         root.addWidget(splitter)
@@ -712,5 +724,5 @@ class MainWindow(QWidget):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     win = MainWindow()
-    win.show()
+    win.showMaximized()
     sys.exit(app.exec())
