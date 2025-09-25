@@ -1,0 +1,47 @@
+{
+  "use_text": true,
+  "text": {
+    "text": "你好1212",
+    "opacity": 93,
+    "font_path": null,
+    "font_size": 29,
+    "stroke": true,
+    "stroke_width": 4,
+    "stroke_color": [
+      0,
+      0,
+      0
+    ],
+    "fill_color": [
+      133,
+      129,
+      255
+    ],
+    "shadow": true,
+    "shadow_offset": [
+      2,
+      2
+    ]
+  },
+  "use_image": false,
+  "image": {
+    "path": null,
+    "opacity": 33,
+    "scale_percent": 30
+  },
+  "layout": {
+    "anchor": "center",
+    "offset_x": -38,
+    "offset_y": -94,
+    "rotation_deg": 0.0,
+    "allow_drag": true
+  },
+  "export": {
+    "mode": "keep",
+    "text": "",
+    "out_format": "PNG",
+    "jpeg_quality": 90,
+    "resize_mode": "none",
+    "resize_value": 100
+  }
+}
